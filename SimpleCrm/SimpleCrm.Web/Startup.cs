@@ -24,10 +24,12 @@ namespace SimpleCrm.Web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
+
             services.AddSingleton<IGreeter, ConfigurationGreeter>();
         }
 
-        
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IGreeter greeter)
@@ -44,23 +46,19 @@ namespace SimpleCrm.Web
                 });
             }
 
-            app.UseFileServer();
-            app.UseWelcomePage(new WelcomePageOptions
-            {
-                Path = "/welcome"
-            });
+            app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/hello", async context =>
+
                 {
-                   
-                    var greeting = greeter.GetGreeting();
-                    await context.Response.WriteAsync(greeting); 
-                });
+                    endpoints.MapDefaultControllerRoute();
+
+                }
             });
+
         }
     }
 }
