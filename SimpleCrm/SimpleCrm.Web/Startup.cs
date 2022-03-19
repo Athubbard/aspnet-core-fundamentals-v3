@@ -13,12 +13,12 @@ namespace SimpleCrm.Web
 {
     public class Startup
     {
-       private readonly IConfiguration configuration;
+        private readonly IConfiguration configuration;
         public Startup(IConfiguration configuration)
         {
             this.configuration = configuration;
 
-        } 
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -52,12 +52,25 @@ namespace SimpleCrm.Web
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    "default", "{controller=Home}/{action=Index}/{id?}");
 
-                {
-                    endpoints.MapDefaultControllerRoute();
+            endpoints.MapControllerRoute(
+                name: "contact",
+                pattern: "Contact/ {phone}",
+                constraints: new { phone = "^\\d{3}-\\d{3}-\\d{4}$" },
+                defaults: new { controller = "Contact", action = "List" }
 
-                }
+
+
+                
+                );
+
+                endpoints.MapControllerRoute(
+                    "default", "{controller=About}/{action=Address}/{id?}");
             });
+
+            app.Run(ctx => ctx.Response.WriteAsync("Not Found"));
 
         }
     }
