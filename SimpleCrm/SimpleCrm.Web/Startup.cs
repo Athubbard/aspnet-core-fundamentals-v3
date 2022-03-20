@@ -40,10 +40,11 @@ namespace SimpleCrm.Web
             }
             else
             {
+              
                 app.UseExceptionHandler(new ExceptionHandlerOptions
-                {
-                    ExceptionHandler = context => context.Response.WriteAsync("There was something wrong here!")
-                });
+               {
+                   ExceptionHandler = context => context.Response.WriteAsync("There was something wrong here!")
+                }); 
             }
 
             app.UseStaticFiles();
@@ -60,14 +61,11 @@ namespace SimpleCrm.Web
                 pattern: "Contact/ {phone}",
                 constraints: new { phone = "^\\d{3}-\\d{3}-\\d{4}$" },
                 defaults: new { controller = "Contact", action = "List" }
-
-
-
                 
                 );
 
-                endpoints.MapControllerRoute(
-                    "default", "{controller=About}/{action=Address}/{id?}");
+             endpoints.MapControllerRoute(
+                "default", "{controller=About}/{action=Address}/{id?}");
             });
 
             app.Run(ctx => ctx.Response.WriteAsync("Not Found"));

@@ -1,19 +1,23 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace SimpleCrm.Web.Controller
 {
+    
     public class AboutController
     {
-        public string Phone(string id)
+       
+        public string Phone()
         {
-            return id;
+            return "413-123-1234";
            
             
         }
-        public string Address(string country)
+       
+        public string Address()
         {
             return "USA";
         }
