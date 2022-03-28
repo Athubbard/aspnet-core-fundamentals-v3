@@ -14,7 +14,7 @@ namespace SimpleCrm.Web.Controllers
                 LastName="Doe",
                 PhoneNumber="314-123-4567" 
             };
-            return new ObjectResult(model);
+            return View(model);
         }
     }
 }
