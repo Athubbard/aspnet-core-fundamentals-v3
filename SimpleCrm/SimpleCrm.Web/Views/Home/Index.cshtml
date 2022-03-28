@@ -1,9 +1,31 @@
-﻿@model SimpleCrm.Web.Models.CustomerModel
+﻿@model IEnumerable<SimpleCrm.Customer>
 @{
 }
 
 <html>
 <body>
-    <h1>@Model.FirstName @Model.LastName</h1>
+    <h1>Displaying all Customers</h1>
+
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone Number</th>
+        </tr>
+
+        @foreach (var customer in @Model)
+         {
+        <tr>
+            <td>@customer.Id</td>
+            <td>@customer.FirstName</td>
+            <td>@customer.LastName</td>
+            <td>@customer.PhoneNumber</td>
+        </tr>
+         }
+         
+       
+
+    </table>
 </body>
 </html>
