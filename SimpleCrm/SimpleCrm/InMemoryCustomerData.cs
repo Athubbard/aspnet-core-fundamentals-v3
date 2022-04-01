@@ -23,6 +23,12 @@ namespace SimpleCrm
         
         }
 
+        public Customer Get(int id)
+        {
+            Customer cust = _customers.FirstOrDefault((x) => x.Id == id);
+            return cust;
+        }
+
         public IEnumerable<Customer> GetAll()
         {
             return _customers;
