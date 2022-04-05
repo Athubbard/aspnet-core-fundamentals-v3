@@ -1,5 +1,5 @@
 ﻿@using SimpleCrm;
-@model SimpleCrm.Customer
+@model SimpleCrm.Web.Models.CustomerEditViewModel
 @{
 }
 
@@ -8,22 +8,28 @@
 </div>
 
 <div>
+    @Html.ValidationSummary()
     @using (Html.BeginForm())
       {
          <div>
              @Html.LabelFor(m => m.FirstName)
-             @Html.TextBoxFor(m => m.FirstName)
+             @Html.EditorFor(m => m.FirstName)
+             @Html.ValidationMessageFor(m => m.FirstName)
          </div>
          <div>
              @Html.LabelFor(m => m.LastName)
-             @Html.TextBoxFor(m => m.LastName)
+             @Html.EditorFor(m => m.LastName)
+             @Html.ValidationMessageFor(m => m.LastName)
          </div>
          <div>
              @Html.LabelFor(m => m.PhoneNumber)
-             @Html.TextBoxFor(m => m.PhoneNumber)
+             @Html.EditorFor(m => m.PhoneNumber)
+             @Html.ValidationMessageFor(m => m.PhoneNumber)
          </div>
          <div>
+             @Html.LabelFor(x => x.Type)
              @Html.DropDownListFor(x => x.Type, Html.GetEnumSelectList(typeof(CustomerType)))
+            
              
          </div>
          <div>
