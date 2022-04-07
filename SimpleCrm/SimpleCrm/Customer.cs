@@ -10,8 +10,11 @@ namespace SimpleCrm
     public class Customer
     {
         public int Id { get; set; }
+        [Required, MinLength(1), MaxLength(30)]
         public string FirstName { get; set; }
+        [Required, MinLength(1), MaxLength(30)]
         public string LastName { get; set; }
+        [Required, MinLength(1), MaxLength(10)]
         public string PhoneNumber { get; set; }
         public CustomerType Type { get; set; }
 

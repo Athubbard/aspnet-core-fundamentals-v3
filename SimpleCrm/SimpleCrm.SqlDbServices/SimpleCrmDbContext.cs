@@ -13,6 +13,6 @@ namespace SimpleCrm.SqlDbServices
             : base(options) { }
 
         public DbSet<Customer> Customer { get; set; }
-        }
+        
     }
 }
