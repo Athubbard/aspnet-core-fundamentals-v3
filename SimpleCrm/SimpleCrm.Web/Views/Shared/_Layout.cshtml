@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div>
+        @RenderBody()
+    </div>
+    
+    <footer>
+        
+        @RenderSection("footer", required: false)<br />
+        &copy; @DateTime.Now.Year SimpleCrm Corp.
+    </footer>
+</body>
+</html>
