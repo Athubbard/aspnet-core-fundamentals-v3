@@ -17,14 +17,69 @@ namespace SimpleCrm.Web.Controllers
 
         public IActionResult Details(int id)
         {
+
+            var customer = _customerData.Get(id);
+            
+            if (customer == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            var model = new CustomerModel
+            {
+                FirstName = customer.FirstName,
+                LastName = customer.LastName,
+                PhoneNumber = customer.PhoneNumber,
+                Id = customer.Id
+            };
+            return View(model);
+
+        }
+        [HttpGet()]
+        public IActionResult Edit(int id)
+        {
             var customer = _customerData.Get(id);
             if (customer == null)
             {
                 return RedirectToAction(nameof(Index));
             }
-            return View(customer);
+            var model = new CustomerEditViewModel
+            {
+                FirstName = customer.FirstName,
+                LastName = customer.LastName,
+                PhoneNumber = customer.PhoneNumber,
+                OptInNewsletter = customer.OptInNewsletter,
+                Type = customer.Type
+            };
 
+            return View(model);
         }
+
+        [HttpPost()]
+        [ValidateAntiForgeryToken()]
+        public IActionResult Edit(CustomerEditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var customer = _customerData.Get(model.Id);
+                if (customer == null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+
+
+                customer.FirstName = model.FirstName;
+                customer.LastName = model.LastName;
+                customer.PhoneNumber = model.PhoneNumber;
+                customer.OptInNewsletter = model.OptInNewsletter;
+                customer.Type = model.Type;
+                
+                _customerData.Update(customer);
+                return RedirectToAction(nameof(Details), new { id = customer.Id });
+            }
+
+            return View();
+        }
+
         [HttpGet()]
         public IActionResult Create()
         {
@@ -44,7 +99,7 @@ namespace SimpleCrm.Web.Controllers
                     OptInNewsletter = model.OptInNewsletter,
                     Type = model.Type
                 };
-                _customerData.Save(customer);
+                _customerData.Add(customer);
 
                 return RedirectToAction(nameof(Details), new { id = customer.Id });
             }

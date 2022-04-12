@@ -9,7 +9,7 @@ namespace SimpleCrm
     public class InMemoryCustomerData : ICustomerData
     {
         static IList<Customer> _customers; //not thread safe - only ook for development, single user
-        static  InMemoryCustomerData()
+        static InMemoryCustomerData()
         {
             _customers = new List<Customer>
             {
@@ -20,7 +20,7 @@ namespace SimpleCrm
                 new Customer { Id =5, FirstName ="James", LastName = "Dean", PhoneNumber = "555-555-7245" },
                 new Customer { Id =6, FirstName ="Michelle", LastName = "Leary", PhoneNumber = "555-555-3457" }
             };
-        
+
         }
 
         public Customer Get(int id)
@@ -34,11 +34,29 @@ namespace SimpleCrm
             return _customers;
         }
 
-        public void Save(Customer customer)
+        public void Add(Customer customer)
         {
             customer.Id = _customers.Max(x => x.Id) + 1;
             _customers.Add(customer);
-            
+
+
         }
+
+        public void Update(Customer customer)
+        {
+
+            var custEdit = _customers.FirstOrDefault((m) =>
+            {
+                return m.Id == customer.Id;
+            });
+            var CustIndex = _customers.IndexOf(custEdit);
+
+            _customers.RemoveAt(CustIndex);
+            _customers.Insert(CustIndex, custEdit);
+
+           
+        }
+        
     }
 }
+
