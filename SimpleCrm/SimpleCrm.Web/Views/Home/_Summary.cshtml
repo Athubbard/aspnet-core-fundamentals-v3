@@ -1,0 +1,18 @@
+﻿@model SimpleCrm.Customer
+@{
+}
+
+
+<div>
+    <h3>
+        <span>
+            @Model.FirstName
+            @Model.LastName
+            @Model.PhoneNumber
+        </span>
+    </h3>
+
+    <a asp-action="Details" asp-route-id="@Model.Id">Detail</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+</div>
+

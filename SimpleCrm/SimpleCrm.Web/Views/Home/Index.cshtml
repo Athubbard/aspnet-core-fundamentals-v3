@@ -7,27 +7,13 @@
     
 
 
-    <table>
+   
 
         @foreach (var customer in @Model.Customers)
          {
-        <tr>
-            <td>
-                <!--<a href="/home/details/@customer.Id">Details</a>-->
-                    @*@Html.ActionLink("View", nameof(HomeController.Details), new { id = customer.Id })*@
-                <!--<a asp-action="Details" asp-route-id="Id"> </a>-->
-            </td>
-            <td>@customer.FirstName</td>
-            <td>@customer.LastName</td>
-            <td>@customer.PhoneNumber</td>
-
-            <td>
-                <a asp-action="Details" asp-route-id="@customer.Id">Detail</a>
-                <a asp-action="Edit" asp-route-id="@customer.Id">Edit</a>
-            </td>
-        </tr>
+              <partial name" _Summary" model="customer"></partial>
          }
-    </table>
+    
        
         <a asp-action="Create">Create</a>
         
