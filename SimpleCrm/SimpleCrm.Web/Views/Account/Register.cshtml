@@ -1,0 +1,43 @@
+﻿@using SimpleCrm
+@model RegisterUserViewModel
+@{
+    ViewBag.Title = "Register";
+}
+
+<h1>Register</h1>
+
+<div>
+    @Html.ValidationSummary()
+    @using (Html.BeginForm())
+
+
+    {
+        <div>
+            @Html.LabelFor(m => m.UserName)
+            @Html.EditorFor(m => m.UserName)
+            @Html.ValidationMessageFor(m => m.UserName)
+        </div>
+        <div>
+            @Html.LabelFor(m => m.DisplayName)
+            @Html.EditorFor(m => m.DisplayName)
+            @Html.ValidationMessageFor(m => m.DisplayName)
+        </div>
+        <div>
+            @Html.LabelFor(m => m.Password)
+            @Html.EditorFor(m => m.Password)
+            @Html.ValidationMessageFor(m => m.Password)
+        </div>
+        <div>
+            @Html.LabelFor(m => m.ConfirmPassword)
+            @Html.EditorFor(m => m.ConfirmPassword)
+            @Html.ValidationMessageFor(m => m.ConfirmPassword)
+
+
+        </div>
+    }
+    </div>   
+
+        <div>
+            <input type="submit" value="Register" />
+        </div>
+    

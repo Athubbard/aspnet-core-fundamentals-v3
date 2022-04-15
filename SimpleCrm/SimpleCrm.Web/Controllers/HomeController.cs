@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleCrm.Web.Models;
+using SimpleCrm.Web.Models.RegisterModel;
 using System;
 
 namespace SimpleCrm.Web.Controllers
@@ -21,7 +22,7 @@ namespace SimpleCrm.Web.Controllers
         {
 
             var customer = _customerData.Get(id);
-            
+
             if (customer == null)
             {
                 return RedirectToAction(nameof(Index));
@@ -74,7 +75,7 @@ namespace SimpleCrm.Web.Controllers
                 customer.PhoneNumber = model.PhoneNumber;
                 customer.OptInNewsletter = model.OptInNewsletter;
                 customer.Type = model.Type;
-                
+
                 _customerData.Update(customer);
                 return RedirectToAction(nameof(Details), new { id = customer.Id });
             }
@@ -113,11 +114,13 @@ namespace SimpleCrm.Web.Controllers
 
             var model = new HomePageViewModel
             {
-               
+
                 Customers = _customerData.GetAll()
             };
 
             return View(model);
         }
+
+        
     }
 }
