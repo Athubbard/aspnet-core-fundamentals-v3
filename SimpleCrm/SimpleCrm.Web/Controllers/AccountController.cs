@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using SimpleCrm.Web.Models.RegisterModel;
 using System;
 using System.Collections.Generic;
@@ -7,8 +8,18 @@ using System.Threading.Tasks;
 
 namespace SimpleCrm.Web.Controllers
 {
+
     public class AccountController: Controller
     {
+        private readonly UserManager<CrmUser> userManager;
+        private readonly SignInManager<CrmUser> signInManager;
+
+        public AccountController(UserManager<CrmUser> userManager, SignInManager<CrmUser> signInManager)
+        {
+            this.userManager = userManager;
+            this.signInManager = signInManager;
+        }
+
         [HttpGet]
         public IActionResult Register()
         {
@@ -16,17 +27,37 @@ namespace SimpleCrm.Web.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Register(RegisterUserViewModel model)
+        public async Task<IActionResult> Register(RegisterUserViewModel model)
         {
-            var RegisterUser = new RegisterUserViewModel
+            if (ModelState.IsValid)
             {
-                UserName = model.UserName,
-                DisplayName = model.DisplayName,
-                Password = model.Password,
-                ConfirmPassword = model.ConfirmPassword
+                var user = new CrmUser
+                {
+                    UserName = model.UserName,
+                    DisplayName = model.DisplayName,
+                    Email = model.UserName
 
-            };
+                };
+
+
+                var createResult = await this.userManager.CreateAsync(user, model.Password);
+
+
+                if (createResult.Succeeded)
+                {
+                    await this.signInManager.SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("Index", "Home");
+                }
+
+                foreach (var result in createResult.Errors)
+                {
+                    ModelState.AddModelError("", result.Description);
+                }
+            }
             return View(model);
         }
+
     }
+
+        
 }
