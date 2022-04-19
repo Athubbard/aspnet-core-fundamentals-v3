@@ -1,0 +1,27 @@
+﻿@model LoginUserViewModel  
+@{
+}
+
+<h1>Login</h1>
+
+<div>
+    @Html.ValidationSummary()
+    @using (Html.BeginForm())
+
+    {
+        <div>
+            @Html.LabelFor(m => m.UserName)
+            @Html.EditorFor(m => m.UserName)
+            @Html.ValidationMessageFor(m => m.UserName)
+        </div>
+
+        <div>
+            @Html.LabelFor(m => m.Password)
+            @Html.EditorFor(m => m.Password)
+            @Html.ValidationMessageFor(m => m.Password)
+        </div>
+
+        <div>
+            <input type="submit" value="Login" />
+        </div>
+    }

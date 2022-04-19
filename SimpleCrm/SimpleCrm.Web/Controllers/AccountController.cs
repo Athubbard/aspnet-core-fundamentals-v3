@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using SimpleCrm.Web.Models.RegisterModel;
+using SimpleCrm.Web.Models;
+using SimpleCrm.Web.Models.Account;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 namespace SimpleCrm.Web.Controllers
 {
 
-    public class AccountController: Controller
+    public class AccountController : Controller
     {
         private readonly UserManager<CrmUser> userManager;
         private readonly SignInManager<CrmUser> signInManager;
@@ -56,8 +57,44 @@ namespace SimpleCrm.Web.Controllers
             }
             return View(model);
         }
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
 
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var loginResult = await signInManager.PasswordSignInAsync(
+              model.UserName, model.Password, model.RememberMe, false);
+                if (loginResult.Succeeded)
+                {
+                    if (Url.IsLocalUrl(model.ReturnUrl))
+                    {
+                        return Redirect(model.ReturnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+
+                    }
+                }
+
+                ModelState.AddModelError("", "Could not login");
+            }
+            return View();
+        }
     }
-
-        
 }
+        
+    

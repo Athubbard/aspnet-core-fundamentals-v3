@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleCrm.Web.Models;
-using SimpleCrm.Web.Models.RegisterModel;
+using SimpleCrm.Web.Models.Account;
 using System;
 
 namespace SimpleCrm.Web.Controllers

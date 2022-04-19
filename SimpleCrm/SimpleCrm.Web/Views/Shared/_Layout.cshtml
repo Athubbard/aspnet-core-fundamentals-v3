@@ -6,11 +6,14 @@
 </head>
 <body>
     <div>
+        @await Component.InvokeAsync("LoginLogout")  
+    </div>
+    <div>
         @RenderBody()
     </div>
-    
+
     <footer>
-        
+
         @await Component.InvokeAsync("Greeting")
         &copy; @DateTime.Now.Year SimpleCrm Corp.
     </footer>
