@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "name": "simpleCrm",
+  "private": true,
+  "devDependencies": {
+  },
+  "dependencies": {
+    "material-design-lite": "1.3.0",
+    "jquery": "3.5.1",
+    "jquery-validation": "1.19.2",
+    "dryv-jquery-unobtrusive": "3.2.11"
+  }
+}
