@@ -5,20 +5,22 @@
     <title>@ViewBag.Title</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/css/vendor.min.css">
-    
+    <link rel="stylesheet" href="/css/site.css" />
+    <script src="/js/vendor.min.js"></script>
+
 </head>
 <body>
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-        <header class="mdl-layout_header">
+        <header class="mdl-layout__header">
             <div class="mdl-layout__header-row">
                 <span class="mdl-layout-title">Simple CRM</span>
 
                 <div class="mdl-layout-spacer"></div>
 
-                <nav class="mdl-navigation mdl-accordion-layout--large-screen-only">
+                <nav class="mdl-navigation mdl-layout--large-screen-only">
                     <a class="mdl-navigation__link" href="/">Customers</a>
                     <a class="mdl-navigation__link" asp-action="Create" asp-controller="Home">Create</a>
-                   
+                    @await Component.InvokeAsync("LoginLogout")
                 </nav>
             </div>
         </header>
@@ -30,23 +32,20 @@
                 <a class="mdl-navigation__link" asp-action="Register" asp-controller="Account">Register</a>
             </nav>
         </div>
-        <div>
-            @await Component.InvokeAsync("LoginLogout")
-
-        </div>
 
 
     </div>
-    
-    <div>
+
+    <main class="mdl-layout__content">
         @RenderBody()
-    </div>
+    </main>
+
 
     <footer class="mdl-mini-footer">
         <div class="mdl-mini-footer__left-section">
             @await Component.InvokeAsync("Greeting")
         </div>
-        
+
         <div class="mdl-mini-footer__right-section">
             <ul class="mdl-mini-footer__link-list">
                 <li><a href="#"> &copy; @DateTime.Now.Year</a></li>
@@ -55,9 +54,9 @@
             </ul>
         </div>
     </footer>
+    <script src="/js/vendor-post.min.js"></script>
+
+    
 </body>
 </html>
 
-<script>
-    /js/vendor.min.js
-</script>
