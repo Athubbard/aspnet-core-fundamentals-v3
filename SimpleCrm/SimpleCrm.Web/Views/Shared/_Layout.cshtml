@@ -5,20 +5,59 @@
     <title>@ViewBag.Title</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/css/vendor.min.css">
-    <link rel="stylesheet" href="/js/vendor.min.js" />
+    
 </head>
 <body>
-    <div>
-        @await Component.InvokeAsync("LoginLogout")  
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout_header">
+            <div class="mdl-layout__header-row">
+                <span class="mdl-layout-title">Simple CRM</span>
+
+                <div class="mdl-layout-spacer"></div>
+
+                <nav class="mdl-navigation mdl-accordion-layout--large-screen-only">
+                    <a class="mdl-navigation__link" href="/">Customers</a>
+                    <a class="mdl-navigation__link" asp-action="Create" asp-controller="Home">Create</a>
+                   
+                </nav>
+            </div>
+        </header>
+        <div class="mdl-layout__drawer">
+            <span class="mdl-layout-title">Simple CRM</span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link" href="/">Customers</a>
+                <a class="mdl-navigation__link" asp-action="Create" asp-controller="Home">Create</a>
+                <a class="mdl-navigation__link" asp-action="Register" asp-controller="Account">Register</a>
+            </nav>
+        </div>
+        <div>
+            @await Component.InvokeAsync("LoginLogout")
+
+        </div>
+
+
     </div>
+    
     <div>
         @RenderBody()
     </div>
 
-    <footer>
-
-        @await Component.InvokeAsync("Greeting")
-        &copy; @DateTime.Now.Year SimpleCrm Corp.
+    <footer class="mdl-mini-footer">
+        <div class="mdl-mini-footer__left-section">
+            @await Component.InvokeAsync("Greeting")
+        </div>
+        
+        <div class="mdl-mini-footer__right-section">
+            <ul class="mdl-mini-footer__link-list">
+                <li><a href="#"> &copy; @DateTime.Now.Year</a></li>
+                <li><a href="#">SimpleCrm Sample Corp.</a></li>
+                @RenderSection("footer", required: false)
+            </ul>
+        </div>
     </footer>
 </body>
 </html>
+
+<script>
+    /js/vendor.min.js
+</script>

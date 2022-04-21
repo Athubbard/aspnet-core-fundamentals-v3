@@ -7,13 +7,13 @@
       {
         <span>Hello, @Model.DisplayName</span>
         <form method="post" asp-antiforgery="true" asp-action="Logout" asp-controller="Account">
-            <button type="submit">Logout</button>
+            <button type="submit" class="mdl-navigation__link">Logout</button>
         </form>
     }
     else
     {
         <span>Anonymous</span>
-        <a asp-action="Login" asp-controller="Account">Login</a> @("|")
-        <a asp-action="Register" asp-controller="Account">Register</a>
+        <a class="mdl-navigation__link" asp-action="Login" asp-controller="Account">Login</a> 
+        
     }
 </div>

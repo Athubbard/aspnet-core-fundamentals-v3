@@ -57,13 +57,21 @@ namespace SimpleCrm.Web.Controllers
             }
             return View(model);
         }
+
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            return View();
+        }
+
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout()
+        public async Task<IActionResult> Logout(LoginUserViewModel model)
         {
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
 
+       
         [HttpGet]
         public IActionResult Login()
         {
