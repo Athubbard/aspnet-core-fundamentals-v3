@@ -1,4 +1,17 @@
-﻿.mdl-navigation__link.button-cleanup {
-   line-height: 30px;
-   padding: 3px 15px;
+﻿
+
+.content {
+    width: 80%;
+    margin: 200px;
+}
+
+.fab-right {
+    position: absolute;
+    right: 0px;
+    top: 66px;
+    z-index: 999;
+}
+
+.mdl-textfield__error.field-validation-error {
+    visibility: visible;
 }

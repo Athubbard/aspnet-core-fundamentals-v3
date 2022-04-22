@@ -22,5 +22,7 @@ namespace SimpleCrm.Web.Models.Account
         [Required]
         [DataType(DataType.Password), Compare("Password")]
         public string ConfirmPassword { get; set; }
+
+       
     }
 }

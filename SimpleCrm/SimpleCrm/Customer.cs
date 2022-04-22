@@ -18,6 +18,7 @@ namespace SimpleCrm
         public string PhoneNumber { get; set; }
         public CustomerType Type { get; set; }
 
-        public bool OptInNewsletter { get; set; } 
+        public bool OptInNewsletter { get; set; }
+        
     }
 }
