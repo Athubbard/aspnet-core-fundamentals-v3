@@ -1,5 +1,4 @@
 ﻿
-
 .content {
     width: 80%;
     margin: 200px;
@@ -14,4 +13,9 @@
 
 .mdl-textfield__error.field-validation-error {
     visibility: visible;
+}
+.loginErrorMessage ul {
+    color: red;
+    list-style-type: none;
+    list-style: none;
 }
