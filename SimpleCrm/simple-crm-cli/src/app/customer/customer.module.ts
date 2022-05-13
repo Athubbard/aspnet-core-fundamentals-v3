@@ -9,6 +9,11 @@ import { CustomerRoutingModule } from './customer-routing.module';
 import { CustomerListPageComponent } from './customer-list-page/customer-list-page.component';
 import { MatButtonModule } from '@angular/material/button';
 import { CustomerService } from './customer.service';
+import { CustomerMockService } from './customer-mock.service';
+import { environment } from 'src/environments/environment';
+
+
+
 
 
 @NgModule({
@@ -24,9 +29,14 @@ import { CustomerService } from './customer.service';
     MatTableModule,
 
 
+
   ],
   providers: [
-    CustomerService
+    {
+      provide: CustomerService,
+      useClass: environment.production ? CustomerService : CustomerMockService
+    }
+
   ]
 })
 export class CustomerModule { }
