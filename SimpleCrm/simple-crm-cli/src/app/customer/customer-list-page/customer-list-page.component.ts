@@ -21,6 +21,7 @@ export class CustomerListPageComponent implements OnInit {
 
   constructor(private customerService: CustomerService ) {
     this.customers$ = customerService.search("");
+
   }
 
   ngOnInit(): void {
