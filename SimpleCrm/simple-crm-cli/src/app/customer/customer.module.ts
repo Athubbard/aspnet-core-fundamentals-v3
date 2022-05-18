@@ -11,6 +11,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { CustomerService } from './customer.service';
 import { CustomerMockService } from './customer-mock.service';
 import { environment } from 'src/environments/environment';
+import { MatIconModule } from '@angular/material/icon';
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 
 
 
@@ -27,6 +30,8 @@ import { environment } from 'src/environments/environment';
     MatButtonModule,
     MatCardModule,
     MatTableModule,
+    MatIconModule,
+    FlexLayoutModule
 
 
 
