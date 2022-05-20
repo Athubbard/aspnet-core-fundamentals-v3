@@ -23,7 +23,8 @@ export class CustomerListPageComponent implements OnInit {
   displayColumns = [ 'name', 'phoneNumber', 'email', 'status'];
 
   constructor(private customerService: CustomerService,
-    public dialog: MatDialog ) {
+    public dialog: MatDialog,
+    ) {
     this.customers$ = customerService.search("");
 
   }
