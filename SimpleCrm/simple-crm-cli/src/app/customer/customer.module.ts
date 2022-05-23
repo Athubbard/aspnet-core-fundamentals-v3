@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule} from '@angular/material/card';
-import {MatTableModule} from '@angular/material/table';
-import {HttpClientModule} from '@angular/common/http';
+import { MatTableModule} from '@angular/material/table';
+import { HttpClientModule} from '@angular/common/http';
 
 
 import { CustomerRoutingModule } from './customer-routing.module';
@@ -14,8 +14,9 @@ import { environment } from 'src/environments/environment';
 import { MatIconModule } from '@angular/material/icon';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { CustomerCreateDialogComponent } from './customer-create-dialog/customer-create-dialog.component';
-import {MatDialogModule} from '@angular/material/dialog';
-
+import { MatDialogModule } from '@angular/material/dialog';
+import { ReactiveFormsModule } from "@angular/forms";
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 
 
@@ -36,10 +37,10 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatTableModule,
     MatIconModule,
     FlexLayoutModule,
-    MatDialogModule
-
-
-
+    MatDialogModule,
+    ReactiveFormsModule,
+    MatIconModule,
+    MatFormFieldModule
   ],
   providers: [
     {
