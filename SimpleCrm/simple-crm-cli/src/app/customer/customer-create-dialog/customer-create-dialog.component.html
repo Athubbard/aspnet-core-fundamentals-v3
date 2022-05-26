@@ -1,19 +1,28 @@
 <mat-dialog-content>
   <form [formGroup]="detailForm" novalidate>
-    <mat-form-field appearance="standard">
+    <mat-form-field appearance="legacy">
       <input matInput placeholder="First Name" formControlName="firstName" name="firstName">
       <mat-error>first name is required</mat-error>
     </mat-form-field>
-    <mat-form-field appearance="standard">
+    <mat-form-field appearance="legacy">
       <input matInput placeholder="Last Name" formControlName="lastName" name="lastName">
       <mat-error>last name is required</mat-error>
     </mat-form-field>
-    <mat-form-field appearance="standard">
+    <mat-form-field appearance="legacy">
+      <mat-label>Phone</mat-label>
       <input matInput placeholder="Phone Number" formControlName="phoneNumber" name="phoneNumber">
     </mat-form-field>
-    <mat-form-field appearance="standard">
+    <mat-form-field appearance="legacy">
       <input matInput placeholder="Email Address"  #emailAddress formControlName="emailAddress" name="emailAddress">
     </mat-form-field>
+   <mat-form-field appearance="legacy">
+     <mat-select matInput placeholder="Contact Method" formControlName="preferredContactMethod" name="preferredContactMethod">
+        <mat-option value="emailAddress">Email</mat-option>
+        <mat-option value="phoneNumber">Phone</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
   </form>
 
 </mat-dialog-content>
