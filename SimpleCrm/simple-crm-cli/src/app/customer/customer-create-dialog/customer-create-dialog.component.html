@@ -14,6 +14,8 @@
     </mat-form-field>
     <mat-form-field appearance="legacy">
       <input matInput placeholder="Email Address"  #emailAddress formControlName="emailAddress" name="emailAddress">
+      <mat-error *ngIf="!emailAddress.value">Email address is required</mat-error>
+      <mat-error *ngIf="emailAddress.value">Invalid email address</mat-error>
     </mat-form-field>
    <mat-form-field appearance="legacy">
      <mat-select matInput placeholder="Contact Method" formControlName="preferredContactMethod" name="preferredContactMethod">

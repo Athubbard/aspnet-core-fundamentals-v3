@@ -1,11 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Customer } from '../customer.model';
 import { CustomerService } from '../customer.service';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from
+
 
 @Component({
   selector: 'crm-customer-create-dialog',
@@ -22,10 +22,10 @@ export class CustomerCreateDialogComponent implements OnInit {
      @Inject(MAT_DIALOG_DATA) public data: Customer | null
      ) {
        this.detailForm = this.fb.group({
-        firstName: [''],
-        lastName: [''],
+        firstName: ['', Validators.required],
+        lastName: ['', Validators.required],
         phoneNumber: [''],
-        emailAddress: [''],
+        emailAddress: ['', [Validators.required, Validators.email]],
         preferredContactMethod: ['email']
        });
 
@@ -39,10 +39,26 @@ export class CustomerCreateDialogComponent implements OnInit {
   }
 
   save(): void {
+    if (!this.detailForm.valid) {
+      return;
+    }
+    const data = {
+      customerId: 3,
+      firstName: 'John',
+      lastName: 'Doe'
+  };
+
+
+
+  let p1 = {
+      ...data, // copies in all 'data' first
+      ...this.detailForm.value // overwrites with any that exist from the form
+  };
     const customer = {...this.data}
     //this.custService.insert(customer);
     this.dialogRef.close(customer);
   }
+
 
   cancel(): void {
     this.dialogRef.close();
