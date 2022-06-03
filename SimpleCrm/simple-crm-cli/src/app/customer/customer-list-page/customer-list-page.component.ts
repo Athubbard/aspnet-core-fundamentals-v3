@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Customer } from '../customer.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { CustomerService } from '../customer.service';
 import { Observable } from 'rxjs';
 import { CustomerCreateDialogComponent } from '../customer-create-dialog/customer-create-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 
 
@@ -20,9 +21,10 @@ export class CustomerListPageComponent implements OnInit {
 
 
 
-  displayColumns = [ 'name', 'phoneNumber', 'email', 'status'];
+  displayColumns = [ 'icon', 'name', 'phoneNumber', 'email', 'status'];
 
   constructor(private customerService: CustomerService,
+    private router: Router,
     public dialog: MatDialog,
     ) {
     this.customers$ = customerService.search("");
@@ -31,6 +33,11 @@ export class CustomerListPageComponent implements OnInit {
 
   ngOnInit(): void {
 
+  }
+  openDetail(item: Customer) : void {
+    if(item) {
+      this.router.navigate([`./customer/${item.customerId}`]);
+    }
   }
 
   addCustomer(): void {

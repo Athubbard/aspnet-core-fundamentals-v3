@@ -18,6 +18,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';
+import { CustomerDetailComponent } from './customer-detail/customer-detail.component';
 
 
 
@@ -28,7 +29,8 @@ import {MatInputModule} from '@angular/material/input';
 @NgModule({
   declarations: [
     CustomerListPageComponent,
-    CustomerCreateDialogComponent
+    CustomerCreateDialogComponent,
+    CustomerDetailComponent
   ],
   imports: [
     CommonModule,

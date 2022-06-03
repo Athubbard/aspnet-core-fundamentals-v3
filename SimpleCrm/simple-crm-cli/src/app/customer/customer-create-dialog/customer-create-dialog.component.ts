@@ -40,6 +40,7 @@ export class CustomerCreateDialogComponent implements OnInit {
 
   save(): void {
     if (!this.detailForm.valid) {
+      this.detailForm.markAllAsTouched();
       return;
     }
     const data = {
@@ -66,7 +67,5 @@ export class CustomerCreateDialogComponent implements OnInit {
 
 }
 
-function MatImputModule(MatImputModule: any) {
-  throw new Error('Function not implemented.');
-}
+
 
