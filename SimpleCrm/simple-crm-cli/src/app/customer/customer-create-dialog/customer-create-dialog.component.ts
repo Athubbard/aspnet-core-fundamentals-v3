@@ -43,16 +43,9 @@ export class CustomerCreateDialogComponent implements OnInit {
       this.detailForm.markAllAsTouched();
       return;
     }
-    const data = {
-      customerId: 3,
-      firstName: 'John',
-      lastName: 'Doe'
-  };
-
-
 
   let p1 = {
-      ...data, // copies in all 'data' first
+      ...this.data, // copies in all 'data' first
       ...this.detailForm.value // overwrites with any that exist from the form
   };
     const customer = {...this.data}
