@@ -13,7 +13,7 @@ import { CustomerService } from '../customer.service';
 })
 export class CustomerDetailComponent implements OnInit {
   detailForm: FormGroup;
-  customerId: number;
+  customerId!: number;
   customer: Customer | undefined;
 
 
@@ -23,7 +23,7 @@ export class CustomerDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private customerService:CustomerService,
      ) {
-      this.customerId = +this.route.snapshot.params['id'];
+
        this.detailForm = this.fb.group({
         firstName: ['', Validators.required],
         lastName: ['', Validators.required],
@@ -39,11 +39,15 @@ export class CustomerDetailComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.customerId = +this.route.snapshot.params['id'];
 
     this.customerService.get(this.customerId)
     .subscribe(cust => {
+      if (cust) {
+        this.customer = cust;
+      }
       this.customer = cust;
-      this.detailForm.patchValue(cust);
+      //this.detailForm.patchValue(cust);
     })
   }
 
