@@ -9,9 +9,9 @@ import { Customer } from './customer.model';
 })
 export class CustomerService {
 
-  constructor(private http: HttpClient) { }
+  constructor(public http: HttpClient) { }
 
-  get(customerId:number): Observable<Customer>{
+  get(customerId:number): Observable<Customer | undefined>{
     return this.http.get<Customer>(`/api/customer/${customerId}`);
   }
 

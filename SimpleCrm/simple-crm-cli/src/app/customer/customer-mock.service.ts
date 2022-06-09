@@ -8,7 +8,7 @@ import { CustomerService } from './customer.service';
 export class CustomerMockService extends CustomerService {
   customers: Customer[] = [];
   lastCustomerId: number;
-
+  customer: Customer | undefined;
 
   constructor(http: HttpClient) {
     super(http);
@@ -73,6 +73,14 @@ export class CustomerMockService extends CustomerService {
       localStorage.setItem('customers', JSON.stringify(updateCustomers));
   };
 
+  //override get(customerId:number): Observable<Customer>{
+   // return this.http.get<Customer>(`/api/customer/${customerId}`);
+   override get(customerId: number): Observable<Customer | undefined> {
+    const item = this.customers.find(x => x.customerId === customerId) as Customer;
+    return of(item);
+  }
+  }
 
- }
+
+
 

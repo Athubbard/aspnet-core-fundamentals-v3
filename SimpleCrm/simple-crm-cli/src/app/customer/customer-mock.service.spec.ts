@@ -1,4 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { get } from 'http';
+import { Observable, of } from 'rxjs';
 
 import { CustomerMockService } from './customer-mock.service';
 
@@ -14,3 +16,5 @@ describe('CustomerMockService', () => {
     expect(service).toBeTruthy();
   });
 });
+
+

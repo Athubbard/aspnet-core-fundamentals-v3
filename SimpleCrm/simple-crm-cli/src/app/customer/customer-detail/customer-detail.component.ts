@@ -12,7 +12,7 @@ import { CustomerService } from '../customer.service';
   styleUrls: ['./customer-detail.component.scss']
 })
 export class CustomerDetailComponent implements OnInit {
-  detailForm: FormGroup;
+  detailForm!: FormGroup;
   customerId!: number;
   customer: Customer | undefined;
 
@@ -24,18 +24,18 @@ export class CustomerDetailComponent implements OnInit {
     private customerService:CustomerService,
      ) {
 
-       this.detailForm = this.fb.group({
-        firstName: ['', Validators.required],
-        lastName: ['', Validators.required],
-        phoneNumber: [''],
-        emailAddress: ['', [Validators.required, Validators.email]],
-        preferredContactMethod: ['email']
-       });
-
-
+     this.createForm();
      }
 
-
+     createForm(): void {
+     this.detailForm = this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      phoneNumber: [''],
+      emailAddress: ['', [Validators.required, Validators.email]],
+      preferredContactMethod: ['email']
+     });
+    }
 
 
   ngOnInit(): void {
