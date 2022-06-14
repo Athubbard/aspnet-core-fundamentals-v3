@@ -12,6 +12,7 @@ import { CustomerService } from '../customer.service';
   styleUrls: ['./customer-detail.component.scss']
 })
 export class CustomerDetailComponent implements OnInit {
+  [x: string]: any;
   detailForm!: FormGroup;
   customerId!: number;
   customer: Customer | undefined;
@@ -51,4 +52,14 @@ export class CustomerDetailComponent implements OnInit {
     })
   }
 
+  save(): void {
+    if (!this.detailForm.valid) {
+      this.detailForm.markAllAsTouched();
+      return;
+    }
+
+  }
+  cancel(): void {
+    this['dialogRef'].close();
+  }
 }
