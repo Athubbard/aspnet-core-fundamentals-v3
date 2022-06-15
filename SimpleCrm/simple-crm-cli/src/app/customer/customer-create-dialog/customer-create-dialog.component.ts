@@ -14,6 +14,8 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class CustomerCreateDialogComponent implements OnInit {
   detailForm: FormGroup;
+  customerId!: number;
+  customer!: Customer | undefined;
 
   constructor(
     private fb: FormBuilder,
@@ -44,13 +46,13 @@ export class CustomerCreateDialogComponent implements OnInit {
       return;
     }
 
-  let p1 = {
+    let customerData = {
       ...this.data, // copies in all 'data' first
       ...this.detailForm.value // overwrites with any that exist from the form
-  };
-    const customer = {...this.data}
-    //this.custService.insert(customer);
-    this.dialogRef.close(customer);
+    };
+
+    this.custService.insert(customerData);
+    this.dialogRef.close(customerData);
   }
 
 
