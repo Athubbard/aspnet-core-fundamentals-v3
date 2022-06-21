@@ -1,10 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerCreateDialogComponent } from '../customer-create-dialog/customer-create-dialog.component';
 import { Customer } from '../customer.model';
 import { CustomerService } from '../customer.service';
+
 
 @Component({
   selector: 'crm-customer-detail',
@@ -21,7 +23,9 @@ export class CustomerDetailComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private snackBar: MatSnackBar
+
   ) {
     this.createForm();
   }
@@ -54,7 +58,8 @@ export class CustomerDetailComponent implements OnInit {
       return;
     }
     const customer = { ...this.customer, ...this.detailForm.value };
-    this.customerService.save(customer);
+    this.customerService.update(customer);
+    this.snackBar.open('Customer saved', 'OK');
   }
 
   cancel(): void {

@@ -21,7 +21,7 @@ export class CustomerListPageComponent implements OnInit {
 
 
 
-  displayColumns = [ 'icon', 'name', 'phoneNumber', 'email', 'status'];
+  displayColumns = [ 'icon', 'name', 'phoneNumber', 'email', 'status', 'date'];
 
   constructor(private customerService: CustomerService,
     private router: Router,

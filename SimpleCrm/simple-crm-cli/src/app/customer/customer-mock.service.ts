@@ -52,6 +52,8 @@ export class CustomerMockService extends CustomerService {
  }
 
  override insert(customer: Customer): Observable<Customer> {
+  customer.lastContactDate = new Date()
+    .toISOString();
   customer.customerId = Math.max(...this.customers.map(x => x.customerId))+ 1;
   this.customers = [...this.customers, customer];
   localStorage.setItem('customers', JSON.stringify(this.customers));
@@ -59,6 +61,8 @@ export class CustomerMockService extends CustomerService {
  }
  override update(customer: Customer): Observable<Customer> {
 
+  customer.lastContactDate = new Date()
+    .toISOString();
    let updateCustomers = this.customers.map(c => {
      if ( c.customerId == customer.customerId) {
       return customer;

@@ -8,9 +8,7 @@ import { Customer } from './customer.model';
   providedIn: 'root'
 })
 export class CustomerService {
-  save(customer: any) {
-    throw new Error('Method not implemented.');
-  }
+
 
   constructor(public http: HttpClient) { }
 

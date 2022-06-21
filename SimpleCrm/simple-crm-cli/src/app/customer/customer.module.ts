@@ -19,6 +19,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';
 import { CustomerDetailComponent } from './customer-detail/customer-detail.component';
+import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 
@@ -45,7 +46,8 @@ import { CustomerDetailComponent } from './customer-detail/customer-detail.compo
     ReactiveFormsModule,
     MatIconModule,
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
+    MatSnackBarModule
 
 
 
