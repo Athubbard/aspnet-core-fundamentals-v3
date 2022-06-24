@@ -20,6 +20,7 @@ import { MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';
 import { CustomerDetailComponent } from './customer-detail/customer-detail.component';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import { StatusIconPipe } from './status-icon.pipe';
 
 
 
@@ -31,7 +32,8 @@ import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
   declarations: [
     CustomerListPageComponent,
     CustomerCreateDialogComponent,
-    CustomerDetailComponent
+    CustomerDetailComponent,
+    StatusIconPipe
   ],
   imports: [
     CommonModule,

@@ -11,6 +11,9 @@ import { MatSidenavModule} from '@angular/material/sidenav';
 import { MatListModule} from '@angular/material/list';
 import { MatIconModule} from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { AppIconsService } from './app-icons.service';
+
+
 
 
 
@@ -33,4 +36,9 @@ import { MatButtonModule } from '@angular/material/button';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+    // simply passing in the icon service, instantiates it and registers its icons
+    constructor(iconService: AppIconsService) {}  // <-- NEW
+  }
+

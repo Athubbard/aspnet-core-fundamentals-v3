@@ -14,7 +14,6 @@ import { CustomerService } from '../customer.service';
   styleUrls: ['./customer-detail.component.scss'],
 })
 export class CustomerDetailComponent implements OnInit {
-  [x: string]: any;
   detailForm!: FormGroup;
   customerId!: number;
   customer: Customer | undefined;
@@ -36,6 +35,7 @@ export class CustomerDetailComponent implements OnInit {
       lastName: ['', Validators.required],
       phoneNumber: [''],
       emailAddress: ['', [Validators.required, Validators.email]],
+      statusCode: [''],
       preferredContactMethod: ['email'],
     });
   }
