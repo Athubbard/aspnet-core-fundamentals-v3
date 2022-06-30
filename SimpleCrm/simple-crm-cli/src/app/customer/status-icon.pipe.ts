@@ -5,8 +5,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class StatusIconPipe implements PipeTransform {
 
-  transform(value: string | null): string  {
-    if (value === null) {
+  transform(value: string | null | undefined): string  {
+    if (value === null || value === undefined) {
       return 'users';
     }
 

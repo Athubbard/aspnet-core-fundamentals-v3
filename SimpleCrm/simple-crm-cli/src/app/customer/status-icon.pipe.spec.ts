@@ -44,6 +44,11 @@ describe('StatusIconPipe', () => {
     const x = pipe.transform(null);
     expect(x).toEqual('users');
   });
+  it('undefined should result in users', () => {
+    const pipe = new StatusIconPipe();
+    const x = pipe.transform(undefined);
+    expect(x).toEqual('users');
+  });
 
   it('empty string should result in users', () => {
     const pipe = new StatusIconPipe();
