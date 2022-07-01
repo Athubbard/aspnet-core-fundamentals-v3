@@ -7,6 +7,11 @@ namespace SimpleCrm.Web.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
+
+        public string EmailAddress { get; set; }
+        public string PreferredContactMethod { get; set; }
+        public string Status { get; set; }
+        public int LastContactDate { get; set; }
         
     }
       

@@ -19,6 +19,15 @@ namespace SimpleCrm
         public CustomerType Type { get; set; }
 
         public bool OptInNewsletter { get; set; }
-        
+
+
+        public string EmailAddress { get; set; }
+        [Required, MinLength(1), MaxLength(25)]
+        public InteractionMethodType PreferredContactMethod { get; set; }
+        public CustomerStatusType Status { get; set; }
+        [Required]
+        public int LastContactDate { get; set; }
+        [Required]
+
     }
 }
