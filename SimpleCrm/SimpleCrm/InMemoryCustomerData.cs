@@ -56,7 +56,10 @@ namespace SimpleCrm
 
            
         }
-        
+        void ICustomerData.Commit()
+        {
+            
+        }
     }
 }
 

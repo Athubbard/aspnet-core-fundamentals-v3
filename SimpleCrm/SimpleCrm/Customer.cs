@@ -20,14 +20,14 @@ namespace SimpleCrm
 
         public bool OptInNewsletter { get; set; }
 
-
+        [Required, MinLength(1), MaxLength(30)]
         public string EmailAddress { get; set; }
-        [Required, MinLength(1), MaxLength(25)]
+        [Required]
         public InteractionMethodType PreferredContactMethod { get; set; }
         public CustomerStatusType Status { get; set; }
-        [Required]
+        
         public int LastContactDate { get; set; }
-        [Required]
+        
 
     }
 }
