@@ -42,6 +42,7 @@ namespace SimpleCrm.SqlDbServices
 
         public void Commit()
         {
+            _simpleCrmDbContext.SaveChanges();
            
         }
     }

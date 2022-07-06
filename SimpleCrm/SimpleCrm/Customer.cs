@@ -26,7 +26,7 @@ namespace SimpleCrm
         public InteractionMethodType PreferredContactMethod { get; set; }
         public CustomerStatusType Status { get; set; }
         
-        public int LastContactDate { get; set; }
+        public DateTimeOffset LastContactDate { get; set; }
         
 
     }
