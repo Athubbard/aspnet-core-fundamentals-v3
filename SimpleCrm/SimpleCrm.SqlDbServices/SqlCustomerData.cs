@@ -45,5 +45,15 @@ namespace SimpleCrm.SqlDbServices
             _simpleCrmDbContext.SaveChanges();
            
         }
+
+        public List<Customer> GetByStatus(CustomerStatusType status, int pageIndex, int take, string OrderBy)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(int customerId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

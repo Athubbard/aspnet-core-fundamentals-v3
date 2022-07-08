@@ -56,6 +56,26 @@ namespace SimpleCrm
 
            
         }
+        public void Delete(int customerId)
+        {
+            var custDelete = _customers.FirstOrDefault((m) =>
+            {
+                return m.Id == customerId;
+            });
+            var CustIndex = _customers.IndexOf(custDelete);
+            _customers.RemoveAt(CustIndex);
+                
+        }
+
+        public List<Customer> GetByStatus(CustomerStatusType status, int pageIndex, int take, string OrderBy)
+        {
+            var list = _customers.Where(m =>m.Status == status)
+                .Skip(pageIndex * take)
+                .Take(take);
+            return list.ToList(); 
+
+            
+        }
         void ICustomerData.Commit()
         {
             
