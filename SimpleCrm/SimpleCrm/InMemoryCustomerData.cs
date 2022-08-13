@@ -69,6 +69,7 @@ namespace SimpleCrm
 
         public List<Customer> GetByStatus(CustomerStatusType status, int pageIndex, int take, string OrderBy)
         {
+
             var list = _customers.Where(m =>m.Status == status)
                 .Skip(pageIndex * take)
                 .Take(take);
