@@ -56,33 +56,31 @@ namespace SimpleCrm.SqlDbServices
 
         public List<Customer> GetByStatus(CustomerStatusType status, int pageIndex, int take, string orderBy)
         {
-            
 
+            var sortableColumns = new string[] { "FIRSTNAME", "LASTNAME", "EMAILADDRESS" }.ToList();
             var splitOrderBy = orderBy.Split(',');
             foreach (string sortExpression in splitOrderBy)
             {
                 var nameAndDirection = sortExpression.Split(' ');
+                if (nameAndDirection.Length > 2)
+                {
+                    throw new Exception("Too many values!");
+                }
                 if (nameAndDirection.Length == 2)
                 {
                     var direction = nameAndDirection[1].ToUpper();
                     if (direction != "DESC" && direction != "ASC")
                         throw new Exception("invalid direction!");
                 }
+                var columnName = nameAndDirection[0].ToUpper();
+                if (!sortableColumns.Contains(columnName))
+                    throw new Exception("invalid column name!");
             }
 
-            /** foreach (string sortExpression in splitOrderBy)
-             {
-                 var columnName = sortExpression.Split(' ');
-                 if (!columnName.Contains("FirstName", "LastName", "EmailAddress") 
-                 {
-                 
-                         throw new Exception("invalid coumn name!");
-                 }
-             }**/
+             
 
-            var sortableColumns = new string[] { "FirstName", "LastName", "EmailAddress" }.ToList();
-            if (!sortableColumns.Contains("a".ToUpper()))
-                throw new Exception("invalid coumn name!");
+            
+            
 
             var query = _context.Customer.Where(x => x.Status == status);
                 if (!string.IsNullOrWhiteSpace(orderBy))
