@@ -1,0 +1,61 @@
+
+<div class="content-column">
+
+
+<mat-card>
+  <form [formGroup]="detailForm" novalidate>
+
+
+  <section fxLayout="row wrap" fxLayoutAlign="space-between">
+    <div fxFlex="48" fxFlex.lt-md="100">
+      <mat-form-field appearance="legacy">
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="firstName" name="firstName">
+      </mat-form-field>
+    </div>
+    <div fxFlex="48" fxFlex.lt-md="100">
+      <mat-form-field appearance="legacy">
+        <mat-label>Email Address</mat-label>
+        <input matInput #emailAddress formControlName="emailAddress" name="emailAddress">
+      </mat-form-field>
+    </div>
+    <div fxFlex="48" fxFlex.lt-md="100">
+      <mat-form-field appearance="legacy">
+        <mat-label>Last Name</mat-label>
+        <input matInput formControlName="lastName" name="lastName">
+      </mat-form-field>
+    </div>
+    <div fxFlex="48" fxFlex.lt-md="100">
+      <mat-form-field appearance="legacy">
+        <mat-label>Phone</mat-label>
+        <input matInput formControlName="phoneNumber" name="phoneNumber">
+      </mat-form-field>
+    </div>
+
+
+
+  <form [formGroup]="detailForm" novalidate>
+   <mat-form-field appearance="legacy">
+    <mat-label>Preferred Contact Method</mat-label>
+     <mat-select matInput  formControlName="preferredContactMethod" name="preferredContactMethod">
+        <mat-option value="emailAddress">Email</mat-option>
+        <mat-option value="phoneNumber">Phone</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+
+  <div fxFlex="48" fxFlex.lt-md="100">
+    <mat-form-field appearance="legacy">
+      <mat-label>Status</mat-label>
+      <mat-select matInput  formControlName="statusCode" name="statusCode">
+        <mat-option value="Prospect">Prospect</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+
+<mat-card-actions>
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-raised-button  (click)="save()" color="accent">Save</button>
+</mat-card-actions>
+

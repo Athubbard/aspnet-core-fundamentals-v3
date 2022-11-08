@@ -20,16 +20,31 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'simple-crm-cli'`, () => {
+  it(`should have as title 'Simple CRM'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('simple-crm-cli');
+    expect(app.title).toEqual('Simple Crm');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('simple-crm-cli app is running!');
+    expect(compiled.querySelector('span.title')?.textContent).toContain('Simple Crm');
   });
+});
+
+it('should render Customer Menu Item', () => {
+  const fixture = TestBed.createComponent(AppComponent);
+  fixture.detectChanges();
+  const compiled = fixture.nativeElement as HTMLElement;
+  console.log('CustomerLine',compiled.querySelector('h4.mat-line'));
+  expect(compiled.querySelector('h4')?.textContent).toContain('Customer');
+});
+
+it('should render Pipe Menu Item line', () => {
+  const fixture = TestBed.createComponent(AppComponent);
+  fixture.detectChanges();
+  const compiled = fixture.nativeElement as HTMLElement;
+  expect(compiled.querySelector('.pipeline')?.textContent).toContain('Pipeline');
 });
