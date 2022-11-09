@@ -54,7 +54,7 @@ namespace SimpleCrm.SqlDbServices
            
         }
 
-        public List<Customer> GetByStatus(CustomerStatusType status, int pageIndex, int take, string orderBy)
+        public List<Customer> GetAll(int pageIndex, int take, string orderBy)
         {
 
             var sortableColumns = new string[] { "FIRSTNAME", "LASTNAME", "EMAILADDRESS" }.ToList();

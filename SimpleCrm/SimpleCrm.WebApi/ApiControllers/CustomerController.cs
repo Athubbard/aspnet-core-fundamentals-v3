@@ -40,7 +40,35 @@ namespace SimpleCrm.WebApi.ApiControllers
         [HttpPost("")]
         public IActionResult Create([FromBody] Customer model)
         {
-            throw new NotImplementedException();
+            _customerData.Add(model);
+            _customerData.Commit();
+            return this.Ok(model);
+        }
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, [FromBody] Customer model)
+        {
+           var editCustomer = _customerData.Get(id);
+            editCustomer.FirstName = model.FirstName;
+            editCustomer.LastName = model.LastName;
+            editCustomer.PhoneNumber = model.PhoneNumber;
+            editCustomer.OptInNewsletter = model.OptInNewsletter;
+            editCustomer.Type = model.Type;
+
+            _customerData.Commit();
+            return this.Ok(model);
+
+        }
+        [HttpDelete("{id}")] 
+        public IActionResult Delete(int id)
+        {
+            var customer = _customerData.Get(id);
+            if (customer == null)
+            {
+                return NotFound(); 
+            }
+            _customerData.Delete(id);
+            _customerData.Commit();
+            return this.Ok(); 
         }
     }
 }
