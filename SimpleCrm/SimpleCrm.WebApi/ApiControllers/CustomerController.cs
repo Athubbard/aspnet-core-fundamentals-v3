@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SimpleCrm.WebApi.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,8 +26,12 @@ namespace SimpleCrm.WebApi.ApiControllers
         [HttpGet("")] //  ./api/customers
         public IActionResult GetAll()
         {
-            throw new NotImplementedException();
-        }
+            var customers = _customerData.GetAll(0, 50, "");
+            var models = customers.Select(c => new CustomerDisplayViewModel(c)
+           );
+            return Ok(models); 
+           
+        } 
         /// <summary>
         /// Retrieves a single customer by id
         /// </summary>
@@ -35,7 +41,15 @@ namespace SimpleCrm.WebApi.ApiControllers
        
         public IActionResult Get(int id)
         {
-            throw new NotImplementedException();
+            var customer = _customerData.Get(id);
+            if (customer == null)
+            {
+                return NotFound();
+               
+            }
+            var model = new CustomerDisplayViewModel(customer);
+            
+            return Ok(model);
         }
         [HttpPost("")]
         public IActionResult Create([FromBody] Customer model)
