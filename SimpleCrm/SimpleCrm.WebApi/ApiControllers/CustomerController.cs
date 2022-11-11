@@ -52,14 +52,23 @@ namespace SimpleCrm.WebApi.ApiControllers
             return Ok(model);
         }
         [HttpPost("")]
-        public IActionResult Create([FromBody] Customer model)
+        public IActionResult Create([FromBody] CustomerCreateViewModel model)
         {
-            _customerData.Add(model);
+            var customer = new Customer();
+            customer.FirstName = model.FirstName;
+            customer.LastName = model.LastName;
+            customer.EmailAddress = model.EmailAddress;
+            customer.PhoneNumber = model.PhoneNumber;
+            customer.PreferredContactMethod = model.PreferredContactMethod;
+
+            _customerData.Add(customer);
             _customerData.Commit();
-            return this.Ok(model);
+
+            
+            return this.Ok(new CustomerDisplayViewModel(customer));
         }
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] Customer model)
+        public IActionResult Update(int id, [FromBody] CustomerUpdateViewModel model)
         {
            var editCustomer = _customerData.Get(id);
             editCustomer.FirstName = model.FirstName;
@@ -69,7 +78,7 @@ namespace SimpleCrm.WebApi.ApiControllers
             editCustomer.Type = model.Type;
 
             _customerData.Commit();
-            return this.Ok(model);
+            return this.Ok(new CustomerDisplayViewModel (editCustomer));
 
         }
         [HttpDelete("{id}")] 
