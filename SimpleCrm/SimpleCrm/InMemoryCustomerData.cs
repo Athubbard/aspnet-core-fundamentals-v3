@@ -81,6 +81,15 @@ namespace SimpleCrm
         {
             
         }
+
+        public List<Customer> GetAll(int pageIndex, int take, string OrderBy)
+        {
+            var custList = _customers
+                .Skip(pageIndex * take)
+                .Take(take)
+                .ToList();
+            return custList;
+        }
     }
 }
 

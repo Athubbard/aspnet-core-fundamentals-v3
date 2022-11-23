@@ -54,6 +54,15 @@ namespace SimpleCrm.WebApi.ApiControllers
         [HttpPost("")]
         public IActionResult Create([FromBody] CustomerCreateViewModel model)
         {
+             if (model == null)
+            {
+                return BadRequest();
+            }
+
+             if (!ModelState.IsValid)
+            {
+                return StatusCode(422, new ValidationStateModel(ModelState));
+            }
             var customer = new Customer();
             customer.FirstName = model.FirstName;
             customer.LastName = model.LastName;
@@ -70,7 +79,16 @@ namespace SimpleCrm.WebApi.ApiControllers
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] CustomerUpdateViewModel model)
         {
-           var editCustomer = _customerData.Get(id);
+            if (model == null)
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return StatusCode(422, new ValidationStateModel(ModelState));
+            }
+            var editCustomer = _customerData.Get(id);
             editCustomer.FirstName = model.FirstName;
             editCustomer.LastName = model.LastName;
             editCustomer.PhoneNumber = model.PhoneNumber;
@@ -84,6 +102,15 @@ namespace SimpleCrm.WebApi.ApiControllers
         [HttpDelete("{id}")] 
         public IActionResult Delete(int id)
         {
+            
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return StatusCode(422, new ValidationStateModel(ModelState)); ;
+            }
             var customer = _customerData.Get(id);
             if (customer == null)
             {

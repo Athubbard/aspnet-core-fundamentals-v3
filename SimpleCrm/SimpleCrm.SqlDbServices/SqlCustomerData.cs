@@ -58,9 +58,13 @@ namespace SimpleCrm.SqlDbServices
         {
 
             var sortableColumns = new string[] { "FIRSTNAME", "LASTNAME", "EMAILADDRESS" }.ToList();
-            var splitOrderBy = orderBy.Split(',');
+            var splitOrderBy = orderBy.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string sortExpression in splitOrderBy)
             {
+                if (String.IsNullOrWhiteSpace(sortExpression))
+                {
+                    continue;
+                }
                 var nameAndDirection = sortExpression.Split(' ');
                 if (nameAndDirection.Length > 2)
                 {
@@ -74,22 +78,28 @@ namespace SimpleCrm.SqlDbServices
                 }
                 var columnName = nameAndDirection[0].ToUpper();
                 if (!sortableColumns.Contains(columnName))
+                {
                     throw new Exception("invalid column name!");
+                }
+                    
             }
+             if (String.IsNullOrWhiteSpace(orderBy))
+            {
+                orderBy = "Lastname Asc";
+            }
+
+            return _context.Customer
+                .OrderBy(orderBy)
+                .Skip(pageIndex * take)
+                .Take(take)
+                .ToList();
 
              
 
             
             
 
-            var query = _context.Customer.Where(x => x.Status == status);
-                if (!string.IsNullOrWhiteSpace(orderBy))
-            {
-                query = query.OrderBy(orderBy); // this "works", but don't do this. don't trust the client code (which can be spoofed)
-            }
-            return query.Skip(pageIndex * take)
-              .Take(take)
-              .ToList();
+            
 
         }
 
