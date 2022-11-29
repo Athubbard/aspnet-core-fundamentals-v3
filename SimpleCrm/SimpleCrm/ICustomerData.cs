@@ -10,7 +10,7 @@ namespace SimpleCrm
     {
         IEnumerable<Customer> GetAll();
         Customer Get(int id);
-        List<Customer> GetAll(int pageIndex, int take, string OrderBy);
+        List<Customer> GetAll(CustomerListParameters customerListParameters);
         void Add(Customer customer);
         void Update(Customer customer);
         void Delete (int customerId);

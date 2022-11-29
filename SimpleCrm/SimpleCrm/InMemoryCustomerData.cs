@@ -82,11 +82,11 @@ namespace SimpleCrm
             
         }
 
-        public List<Customer> GetAll(int pageIndex, int take, string OrderBy)
+        public List<Customer> GetAll(CustomerListParameters listParameters)
         {
             var custList = _customers
-                .Skip(pageIndex * take)
-                .Take(take)
+                .Skip(listParameters.Page - 1 * listParameters.Take)
+                .Take(listParameters.Take)
                 .ToList();
             return custList;
         }

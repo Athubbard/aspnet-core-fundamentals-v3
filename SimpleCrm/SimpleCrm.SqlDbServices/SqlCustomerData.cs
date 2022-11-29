@@ -54,11 +54,11 @@ namespace SimpleCrm.SqlDbServices
            
         }
 
-        public List<Customer> GetAll(int pageIndex, int take, string orderBy)
+        public List<Customer> GetAll(CustomerListParameters listParameters)
         {
 
             var sortableColumns = new string[] { "FIRSTNAME", "LASTNAME", "EMAILADDRESS" }.ToList();
-            var splitOrderBy = orderBy.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            var splitOrderBy = (listParameters.Orderby ?? "").Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string sortExpression in splitOrderBy)
             {
                 if (String.IsNullOrWhiteSpace(sortExpression))
@@ -83,23 +83,48 @@ namespace SimpleCrm.SqlDbServices
                 }
                     
             }
-             if (String.IsNullOrWhiteSpace(orderBy))
+             if (String.IsNullOrWhiteSpace(listParameters.Orderby))
             {
-                orderBy = "Lastname Asc";
+                listParameters.Orderby = "Lastname Asc";
+                
+                
+                
             }
 
-            return _context.Customer
-                .OrderBy(orderBy)
-                .Skip(pageIndex * take)
-                .Take(take)
+            // once an IQueryable is converted into an IList/List, the SQL query is finalized and sent to the database
+            IQueryable<Customer> sortedResults = _context.Customer
+               .OrderBy(listParameters.Orderby); //validated above to nothing unexpected, this is OK now
+                                                 //  calls can be chained onto sortedResults
+
+            if (!string.IsNullOrWhiteSpace(listParameters.LastName))
+            {
+                sortedResults = sortedResults
+                    .Where(x => x.LastName == listParameters.LastName.Trim());
+
+                
+            } // the query still is not sent to the database after this line.
+
+
+            // TOOD: add more optional where clauses for other filter parameters.
+            if (!string.IsNullOrWhiteSpace(listParameters.Term))
+
+            sortedResults = sortedResults.Where(x => (x.FirstName + " " + x.LastName).Contains(listParameters.Term)); 
+               
+
+            
+            return sortedResults
+                .Skip((listParameters.Page - 1) * listParameters.Take)
+                .Take(listParameters.Take)
                 .ToList();
 
-             
 
-            
-            
 
-            
+
+
+
+
+
+
 
         }
 

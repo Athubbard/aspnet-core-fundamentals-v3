@@ -28,20 +28,20 @@ namespace SimpleCrm.WebApi.ApiControllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("", Name = "GetCustomers")] //  ./api/customers
-        public IActionResult GetAll([FromQuery] int page = 1, [FromQuery] int take = 50)
+        public IActionResult GetCustomers([FromQuery] CustomerListParameters resourceParameters)
         {
-            var customers = _customerData.GetAll(page - 1, take, "");
+            var customers = _customerData.GetAll(resourceParameters);
             var models = customers.Select(c => new CustomerDisplayViewModel(c));
             
 
-            if (page < 1 || take <= 0 )
+            if (resourceParameters.Page < 1 || resourceParameters.Take <= 0)
             {
                 return UnprocessableEntity("Invalid Page");
             };
             var pagination = new PaginationModel
             {
-                Next = GetCustomerResourceUri(page + 1, take),
-                Previous = GetCustomerResourceUri(page - 1, take)
+                Next = GetCustomerResourceUri(resourceParameters, 1),
+                Previous = GetCustomerResourceUri(resourceParameters, -1)
             };
 
             
@@ -51,24 +51,21 @@ namespace SimpleCrm.WebApi.ApiControllers
             return Ok(models); 
            
         }
-        private string GetCustomerResourceUri(int page, int take)
+        private string GetCustomerResourceUri(CustomerListParameters listParameters, int pageAdjust)
         {
+            if (listParameters.Page + pageAdjust <= 0)
+                return null;
             return _linkGenerator.GetPathByName(this.HttpContext, "GetCustomers", values: new
             {
-                page = page,
-                take = take
-
-            });
+                page = listParameters.Page + pageAdjust,
+                take = listParameters.Take,
+                orderBy = listParameters.Orderby,
                 
-
-            
-            
+            }); ;
         }
-        /// <summary>
+        
         /// Retrieves a single customer by id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        
         [HttpGet("{id}")] //  ./api/customers/:id
        
         public IActionResult Get(int id)

@@ -11,4 +11,7 @@ namespace SimpleCrm.WebApi.Models
         public string Previous { get; set; }
 
     }
+
+
+   
 }
