@@ -57,6 +57,7 @@ namespace SimpleCrm.WebApi.ApiControllers
         }
         /// Retrieves a single customer by id
         [HttpGet("{id}")] //  ./api/customers/:id
+
         public IActionResult Get(int id)
         {
             var customer = _customerData.Get(id);
@@ -65,7 +66,9 @@ namespace SimpleCrm.WebApi.ApiControllers
                 return NotFound();
             }
             var model = new CustomerDisplayViewModel(customer);
-            
+            Response.Headers.Add("ETag", customer.LastContactDate.ToString("s"));
+
+
             return Ok(model);
         }
         [HttpPost("")]
@@ -86,6 +89,7 @@ namespace SimpleCrm.WebApi.ApiControllers
             customer.EmailAddress = model.EmailAddress;
             customer.PhoneNumber = model.PhoneNumber;
             customer.PreferredContactMethod = model.PreferredContactMethod;
+            customer.LastContactDate = DateTimeOffset.UtcNow;
 
             _customerData.Add(customer);
             _customerData.Commit();
@@ -105,12 +109,22 @@ namespace SimpleCrm.WebApi.ApiControllers
             {
                 return StatusCode(422, new ValidationStateModel(ModelState));
             }
+
             var editCustomer = _customerData.Get(id);
+            string ifMatch = Request.Headers["If-Match"];
+            if (ifMatch != editCustomer.LastContactDate.ToString("s"))
+            {
+                return UnprocessableEntity("Not the latest version");
+            }
             editCustomer.FirstName = model.FirstName;
             editCustomer.LastName = model.LastName;
             editCustomer.PhoneNumber = model.PhoneNumber;
-            editCustomer.OptInNewsletter = model.OptInNewsletter;
-            editCustomer.Type = model.Type;
+            editCustomer.EmailAddress = model.EmailAddress;
+           // editCustomer.OptInNewsletter = model.OptInNewsletter;
+           // editCustomer.Type = model.Type;
+            editCustomer.LastContactDate = DateTimeOffset.UtcNow;
+
+
 
             _customerData.Commit();
             return this.Ok(new CustomerDisplayViewModel (editCustomer));
