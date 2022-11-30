@@ -18,11 +18,13 @@ namespace SimpleCrm.WebApi.Controllers
             _logger = logger;
         }
 
+        [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Client)]
         public IActionResult Index()
         {
             return View();
         }
 
+        [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Client)]
         public IActionResult Privacy()
         {
             return View();

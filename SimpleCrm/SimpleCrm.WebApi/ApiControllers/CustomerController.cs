@@ -23,16 +23,13 @@ namespace SimpleCrm.WebApi.ApiControllers
             _linkGenerator = linkGenerator;
         }
 
-        /// <summary>
         /// Gets all customers visible in the account of the current user
-        /// </summary>
-        /// <returns></returns>
+        [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Client)]
         [HttpGet("", Name = "GetCustomers")] //  ./api/customers
         public IActionResult GetCustomers([FromQuery] CustomerListParameters resourceParameters)
         {
             var customers = _customerData.GetAll(resourceParameters);
             var models = customers.Select(c => new CustomerDisplayViewModel(c));
-            
 
             if (resourceParameters.Page < 1 || resourceParameters.Take <= 0)
             {
@@ -43,13 +40,9 @@ namespace SimpleCrm.WebApi.ApiControllers
                 Next = GetCustomerResourceUri(resourceParameters, 1),
                 Previous = GetCustomerResourceUri(resourceParameters, -1)
             };
-
-            
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(pagination));
-           
 
             return Ok(models); 
-           
         }
         private string GetCustomerResourceUri(CustomerListParameters listParameters, int pageAdjust)
         {
@@ -60,21 +53,16 @@ namespace SimpleCrm.WebApi.ApiControllers
                 page = listParameters.Page + pageAdjust,
                 take = listParameters.Take,
                 orderBy = listParameters.Orderby,
-                
             }); ;
         }
-        
         /// Retrieves a single customer by id
-        
         [HttpGet("{id}")] //  ./api/customers/:id
-       
         public IActionResult Get(int id)
         {
             var customer = _customerData.Get(id);
             if (customer == null)
             {
                 return NotFound();
-               
             }
             var model = new CustomerDisplayViewModel(customer);
             
@@ -126,16 +114,13 @@ namespace SimpleCrm.WebApi.ApiControllers
 
             _customerData.Commit();
             return this.Ok(new CustomerDisplayViewModel (editCustomer));
-
         }
         [HttpDelete("{id}")] 
         public IActionResult Delete(int id)
         {
-            
             {
                 return BadRequest();
             }
-
             if (!ModelState.IsValid)
             {
                 return StatusCode(422, new ValidationStateModel(ModelState)); ;
