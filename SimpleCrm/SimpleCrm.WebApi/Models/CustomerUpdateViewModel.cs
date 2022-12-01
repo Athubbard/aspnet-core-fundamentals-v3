@@ -17,7 +17,7 @@ namespace SimpleCrm.WebApi.Models
         [Required, MinLength(1), MaxLength(30)]
         public string EmailAddress { get; set; }
         public InteractionMethodType PreferredContactMethod { get; set; }
-       // public CustomerType Type { get; set; }
-        //public bool OptInNewsletter { get; set; }
+        public CustomerType Type { get; set; }
+        public bool OptInNewsletter { get; set; }
     }
 }

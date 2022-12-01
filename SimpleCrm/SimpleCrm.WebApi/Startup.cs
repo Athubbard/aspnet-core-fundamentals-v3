@@ -13,6 +13,7 @@ using SimpleCrm.WebApi.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace SimpleCrm.WebApi
@@ -44,6 +45,15 @@ namespace SimpleCrm.WebApi
 
             services.AddScoped<ICustomerData, SqlCustomerData>();
             services.AddResponseCaching();
+            services.AddControllersWithViews().AddJsonOptions(options =>
+            {
+                var settings = options.JsonSerializerOptions;
+                settings.PropertyNameCaseInsensitive = true;
+                settings.Converters.Add(new JsonStringEnumConverter());
+            }
+  );
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,6 +83,7 @@ namespace SimpleCrm.WebApi
 
             app.UseRouting();
             app.UseResponseCaching();
+            
 
             app.UseAuthentication();
             app.UseAuthorization();

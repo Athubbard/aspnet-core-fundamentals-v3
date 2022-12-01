@@ -28,9 +28,6 @@ namespace SimpleCrm.WebApi.ApiControllers
         [HttpGet("", Name = "GetCustomers")] //  ./api/customers
         public IActionResult GetCustomers([FromQuery] CustomerListParameters resourceParameters)
         {
-            var customers = _customerData.GetAll(resourceParameters);
-            var models = customers.Select(c => new CustomerDisplayViewModel(c));
-
             if (resourceParameters.Page < 1 || resourceParameters.Take <= 0)
             {
                 return UnprocessableEntity("Invalid Page");
@@ -41,6 +38,11 @@ namespace SimpleCrm.WebApi.ApiControllers
                 Previous = GetCustomerResourceUri(resourceParameters, -1)
             };
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(pagination));
+
+            var customers = _customerData.GetAll(resourceParameters);
+            var models = customers.Select(c => new CustomerDisplayViewModel(c));
+
+           
 
             return Ok(models); 
         }
