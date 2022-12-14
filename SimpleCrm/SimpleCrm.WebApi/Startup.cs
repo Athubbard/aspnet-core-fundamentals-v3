@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Net.Http.Headers;
 using SimpleCrm.SqlDbServices;
 using SimpleCrm.WebApi.Data;
+using SimpleCrm.WebApi.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,9 +52,13 @@ namespace SimpleCrm.WebApi
                 settings.PropertyNameCaseInsensitive = true;
                 settings.Converters.Add(new JsonStringEnumConverter());
             }
+
   );
+            services.AddControllersWithViews(o =>
+            {
+                o.Filters.Add<GlobalExceptionFilter>();
 
-
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

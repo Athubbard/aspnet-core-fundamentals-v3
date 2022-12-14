@@ -7,8 +7,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace SimpleCrm.WebApi.Controllers
 {
+    
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -19,6 +21,7 @@ namespace SimpleCrm.WebApi.Controllers
         }
 
         [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Client)]
+        [Route ("")]
         public IActionResult Index()
         {
             return View();
