@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using SimpleCrm.WebApi.Controllers;
 using SimpleCrm.WebApi.Models;
 using System;
 using System.Collections.Generic;
@@ -16,11 +18,13 @@ namespace SimpleCrm.WebApi.ApiControllers
     {
         private readonly ICustomerData _customerData;
         private readonly LinkGenerator _linkGenerator;
+        private readonly ILogger<CustomerController> _logger;
 
-        public CustomerController(ICustomerData customerData, LinkGenerator linkGenerator)
+        public CustomerController(ICustomerData customerData, LinkGenerator linkGenerator, ILogger<CustomerController> logger)
         {
             _customerData = customerData;
             _linkGenerator = linkGenerator;
+            _logger = logger;
         }
 
         /// Gets all customers visible in the account of the current user
@@ -42,9 +46,9 @@ namespace SimpleCrm.WebApi.ApiControllers
             var customers = _customerData.GetAll(resourceParameters);
             var models = customers.Select(c => new CustomerDisplayViewModel(c));
 
-           
 
-            return Ok(models); 
+
+            return Ok(models);
         }
         private string GetCustomerResourceUri(CustomerListParameters listParameters, int pageAdjust)
         {
@@ -76,12 +80,13 @@ namespace SimpleCrm.WebApi.ApiControllers
         [HttpPost("")]
         public IActionResult Create([FromBody] CustomerCreateViewModel model)
         {
-             if (model == null)
+          
+            if (model == null)
             {
                 return BadRequest();
             }
 
-             if (!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return StatusCode(422, new ValidationStateModel(ModelState));
             }
@@ -95,8 +100,8 @@ namespace SimpleCrm.WebApi.ApiControllers
 
             _customerData.Add(customer);
             _customerData.Commit();
+            _logger.LogInformation("User created.");
 
-            
             return this.Ok(new CustomerDisplayViewModel(customer));
         }
         [HttpPut("{id}")]

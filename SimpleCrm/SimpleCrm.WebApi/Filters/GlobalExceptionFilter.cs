@@ -17,8 +17,8 @@ namespace SimpleCrm.WebApi.Filters
         public GlobalExceptionFilter(ILogger<GlobalExceptionFilter> logger)
         {
             _logger = logger;
-            
-            
+            _logger.LogInformation("User created a new account with password.");
+
         }
 
     public void Dispose() { }
