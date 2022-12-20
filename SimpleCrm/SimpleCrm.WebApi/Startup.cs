@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -85,6 +86,18 @@ namespace SimpleCrm.WebApi
                         "public,max-age=" + durationInSeconds;
                 }
             });
+
+            app.UseWhen(
+         context => !context.Request.Path.StartsWithSegments("/api"),
+         appBuilder => appBuilder.UseSpa(spa =>
+         {
+             if (env.IsDevelopment())
+             {
+                 spa.Options.SourcePath = "../simple-crm-cli";
+                 spa.Options.StartupTimeout = new TimeSpan(0, 0, 300); //300 seconds
+                  spa.UseAngularCliServer(npmScript: "start");
+             }
+         }));
 
             app.UseRouting();
             app.UseResponseCaching();
