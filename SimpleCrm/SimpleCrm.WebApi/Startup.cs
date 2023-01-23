@@ -36,9 +36,9 @@ namespace SimpleCrm.WebApi
                 options.UseSqlServer(
                     Configuration.GetConnectionString("SimpleCrmConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("SimpleCrmConnection")));
+            //services.AddDbContext<ApplicationDbContext>(options =>
+                //options.UseSqlServer(
+                  //  Configuration.GetConnectionString("SimpleCrmConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
