@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Net.Http.Headers;
 using SimpleCrm.SqlDbServices;
+using SimpleCrm.WebApi.Auth;
 using SimpleCrm.WebApi.Data;
 using SimpleCrm.WebApi.Filters;
 using System;
@@ -17,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+
 
 namespace SimpleCrm.WebApi
 {
@@ -36,9 +38,9 @@ namespace SimpleCrm.WebApi
                 options.UseSqlServer(
                     Configuration.GetConnectionString("SimpleCrmConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
-            //services.AddDbContext<ApplicationDbContext>(options =>
-                //options.UseSqlServer(
-                  //  Configuration.GetConnectionString("SimpleCrmConnection")));
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("SimpleCrmConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -59,6 +61,35 @@ namespace SimpleCrm.WebApi
             {
                 o.Filters.Add<GlobalExceptionFilter>();
 
+            });
+            var googleOptions = Configuration.GetSection(nameof(GoogleAuthSettings));
+            services.Configure<GoogleAuthSettings>(options =>
+            {
+                options.ClientId = googleOptions[nameof(GoogleAuthSettings.ClientId)];
+                options.ClientSecret = googleOptions[nameof(GoogleAuthSettings.ClientSecret)];
+            });
+
+            var microsoftOptions = Configuration.GetSection(nameof(MicrosoftAuthSettings));
+            services.Configure<MicrosoftAuthSettings>(options =>
+            {
+                options.ClientId = microsoftOptions[nameof(MicrosoftAuthSettings.ClientId)];
+                options.ClientSecret = microsoftOptions[nameof(MicrosoftAuthSettings.ClientSecret)];
+            });
+
+
+            services.AddAuthentication()
+                .AddCookie(cfg => cfg.SlidingExpiration = true)
+                .AddGoogle(options =>  // <-- NEW
+              {
+                    options.ClientId = googleOptions[nameof(GoogleAuthSettings.ClientId)];
+                    options.ClientSecret = googleOptions[nameof(GoogleAuthSettings.ClientSecret)];
+                });
+
+
+            services.AddAuthentication().AddMicrosoftAccount(options =>
+            {
+                options.ClientId = microsoftOptions[nameof(MicrosoftAuthSettings.ClientId)];
+                options.ClientSecret = microsoftOptions[nameof(MicrosoftAuthSettings.ClientId)];
             });
         }
 
