@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using SimpleCrm.SqlDbServices;
 using SimpleCrm.WebApi.Auth;
@@ -16,6 +18,7 @@ using SimpleCrm.WebApi.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
@@ -31,9 +34,18 @@ namespace SimpleCrm.WebApi
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        private const string SecretKey = "sdkdhsHOQPdjspQNSHsjsSDQWJqzkpdnf"; //<-- NEW: make up a random key here
+        private readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
         public void ConfigureServices(IServiceCollection services)
         {
+            var jwtOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
+            services.Configure<JwtIssuerOptions>(options =>
+            {
+                options.Issuer = jwtOptions[nameof(JwtIssuerOptions.Issuer)];
+                options.Audience = jwtOptions[nameof(JwtIssuerOptions.Audience)];
+                options.SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
+                // optionally: allow configuration overide of ValidFor (defaults to 120 mins)
+            });
             services.AddDbContext<SimpleCrmDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("SimpleCrmConnection")));
@@ -91,7 +103,34 @@ namespace SimpleCrm.WebApi
                 options.ClientId = microsoftOptions[nameof(MicrosoftAuthSettings.ClientId)];
                 options.ClientSecret = microsoftOptions[nameof(MicrosoftAuthSettings.ClientId)];
             });
+
+            var tokenValidationPrms = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = jwtOptions[nameof(JwtIssuerOptions.Issuer)],
+                ValidateAudience = true,
+                ValidAudience = jwtOptions[nameof(JwtIssuerOptions.Audience)],
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = _signingKey,
+                RequireExpirationTime = false,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            };
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(configureOptions =>
+            {
+                // ... TODO: set token options
+                configureOptions.ClaimsIssuer = jwtOptions[nameof(JwtIssuerOptions.Issuer)];
+                configureOptions.TokenValidationParameters = tokenValidationPrms;
+                configureOptions.SaveToken = true; // allows token access in controller
+            });
+
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
