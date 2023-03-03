@@ -55,8 +55,17 @@ namespace SimpleCrm.WebApi
                     Configuration.GetConnectionString("SimpleCrmConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            var identityBuilder = services.AddIdentityCore<CrmUser>(o => {
+                //TODO: you may override any default password rules here.
+            });
+            identityBuilder = new IdentityBuilder(identityBuilder.UserType,
+              typeof(IdentityRole), identityBuilder.Services);
+            identityBuilder.AddEntityFrameworkStores<CrmIdentityDbContext>();
+            identityBuilder.AddRoleValidator<RoleValidator<IdentityRole>>();
+            identityBuilder.AddRoleManager<RoleManager<IdentityRole>>();
+            identityBuilder.AddSignInManager<SignInManager<CrmUser>>();
+            identityBuilder.AddDefaultTokenProviders();
+
             services.AddControllersWithViews();
 
             services.AddScoped<ICustomerData, SqlCustomerData>();
@@ -92,17 +101,17 @@ namespace SimpleCrm.WebApi
             services.AddAuthentication()
                 .AddCookie(cfg => cfg.SlidingExpiration = true)
                 .AddGoogle(options =>  // <-- NEW
-              {
+                {
                     options.ClientId = googleOptions[nameof(GoogleAuthSettings.ClientId)];
                     options.ClientSecret = googleOptions[nameof(GoogleAuthSettings.ClientSecret)];
+                })
+
+
+                .AddMicrosoftAccount(options =>
+                {
+                    options.ClientId = microsoftOptions[nameof(MicrosoftAuthSettings.ClientId)];
+                    options.ClientSecret = microsoftOptions[nameof(MicrosoftAuthSettings.ClientId)];
                 });
-
-
-            services.AddAuthentication().AddMicrosoftAccount(options =>
-            {
-                options.ClientId = microsoftOptions[nameof(MicrosoftAuthSettings.ClientId)];
-                options.ClientSecret = microsoftOptions[nameof(MicrosoftAuthSettings.ClientId)];
-            });
 
             var tokenValidationPrms = new TokenValidationParameters
             {
@@ -127,6 +136,13 @@ namespace SimpleCrm.WebApi
                 configureOptions.ClaimsIssuer = jwtOptions[nameof(JwtIssuerOptions.Issuer)];
                 configureOptions.TokenValidationParameters = tokenValidationPrms;
                 configureOptions.SaveToken = true; // allows token access in controller
+            });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ApiUser", policy => policy.RequireClaim(
+                  Constants.JwtClaimIdentifiers.Rol,
+                  Constants.JwtClaims.ApiAccess
+                ));
             });
 
         }

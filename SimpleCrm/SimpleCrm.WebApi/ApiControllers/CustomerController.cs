@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -14,6 +15,7 @@ using System.Threading.Tasks;
 namespace SimpleCrm.WebApi.ApiControllers
 {
     [Route("api/customers")]
+    [Authorize(Policy = "ApiUser")]
     public class CustomerController : Controller
     {
         private readonly ICustomerData _customerData;
@@ -139,9 +141,7 @@ namespace SimpleCrm.WebApi.ApiControllers
         [HttpDelete("{id}")] 
         public IActionResult Delete(int id)
         {
-            {
-                return BadRequest();
-            }
+            
             if (!ModelState.IsValid)
             {
                 return StatusCode(422, new ValidationStateModel(ModelState)); ;
