@@ -55,7 +55,8 @@ namespace SimpleCrm.WebApi
                     Configuration.GetConnectionString("SimpleCrmConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            var identityBuilder = services.AddIdentityCore<CrmUser>(o => {
+            var identityBuilder = services.AddIdentityCore<CrmUser>(o =>
+            {
                 //TODO: you may override any default password rules here.
             });
             identityBuilder = new IdentityBuilder(identityBuilder.UserType,
@@ -75,14 +76,13 @@ namespace SimpleCrm.WebApi
                 var settings = options.JsonSerializerOptions;
                 settings.PropertyNameCaseInsensitive = true;
                 settings.Converters.Add(new JsonStringEnumConverter());
-            }
+            });
 
-  );
             services.AddControllersWithViews(o =>
             {
                 o.Filters.Add<GlobalExceptionFilter>();
-
             });
+
             var googleOptions = Configuration.GetSection(nameof(GoogleAuthSettings));
             services.Configure<GoogleAuthSettings>(options =>
             {
@@ -97,22 +97,6 @@ namespace SimpleCrm.WebApi
                 options.ClientSecret = microsoftOptions[nameof(MicrosoftAuthSettings.ClientSecret)];
             });
 
-
-            services.AddAuthentication()
-                .AddCookie(cfg => cfg.SlidingExpiration = true)
-                .AddGoogle(options =>  // <-- NEW
-                {
-                    options.ClientId = googleOptions[nameof(GoogleAuthSettings.ClientId)];
-                    options.ClientSecret = googleOptions[nameof(GoogleAuthSettings.ClientSecret)];
-                })
-
-
-                .AddMicrosoftAccount(options =>
-                {
-                    options.ClientId = microsoftOptions[nameof(MicrosoftAuthSettings.ClientId)];
-                    options.ClientSecret = microsoftOptions[nameof(MicrosoftAuthSettings.ClientId)];
-                });
-
             var tokenValidationPrms = new TokenValidationParameters
             {
                 ValidateIssuer = true,
@@ -125,18 +109,31 @@ namespace SimpleCrm.WebApi
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero
             };
-
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(configureOptions =>
-            {
-                // ... TODO: set token options
-                configureOptions.ClaimsIssuer = jwtOptions[nameof(JwtIssuerOptions.Issuer)];
-                configureOptions.TokenValidationParameters = tokenValidationPrms;
-                configureOptions.SaveToken = true; // allows token access in controller
-            });
+            })
+                .AddCookie(cfg => cfg.SlidingExpiration = true)
+                .AddGoogle(options =>  // <-- NEW
+                {
+                    options.ClientId = googleOptions[nameof(GoogleAuthSettings.ClientId)];
+                    options.ClientSecret = googleOptions[nameof(GoogleAuthSettings.ClientSecret)];
+                })
+                .AddMicrosoftAccount(options =>
+                {
+                    options.ClientId = microsoftOptions[nameof(MicrosoftAuthSettings.ClientId)];
+                    options.ClientSecret = microsoftOptions[nameof(MicrosoftAuthSettings.ClientId)];
+                })
+                .AddJwtBearer(configureOptions =>
+                 {
+                     // ... TODO: set token options
+                     configureOptions.ClaimsIssuer = jwtOptions[nameof(JwtIssuerOptions.Issuer)];
+                     configureOptions.TokenValidationParameters = tokenValidationPrms;
+                     configureOptions.SaveToken = true; // allows token access in controller
+                 });
+            services.AddSingleton<IJwtFactory, JwtFactory>();
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("ApiUser", policy => policy.RequireClaim(
@@ -144,7 +141,6 @@ namespace SimpleCrm.WebApi
                   Constants.JwtClaims.ApiAccess
                 ));
             });
-
         }
 
 
@@ -173,15 +169,12 @@ namespace SimpleCrm.WebApi
                 }
             });
 
-            
+
 
             app.UseRouting();
             app.UseResponseCaching();
-
-
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
