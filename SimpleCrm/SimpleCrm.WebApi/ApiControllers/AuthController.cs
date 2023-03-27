@@ -34,7 +34,6 @@ namespace SimpleCrm.WebApi.ApiControllers
             var userModel = await GetUserData(user);
             return Ok(userModel);
 
-
         }
 
        
