@@ -11,11 +11,11 @@ namespace SimpleCrm.WebApi.ApiControllers
     [Route("api/auth")]
     public class AuthController : Controller
     {
-        private readonly UserManager<CrmUser> userManager;
+        private readonly UserManager<CrmUser> _userManager;
         private readonly JwtFactory _jwtFactory;
         public AuthController(UserManager<CrmUser> userManager)
         {
-            this.userManager = userManager;
+            this._userManager = userManager;
         }
         [HttpPost("login")]
         public async Task<IActionResult> Post([FromBody] CredentialsViewModel credentials)
@@ -25,27 +25,41 @@ namespace SimpleCrm.WebApi.ApiControllers
                 return UnprocessableEntity(ModelState);
             }
 
-            var user = await userManager.FindByEmailAsync(credentials.EmailAddress);
+            var user = await _userManager.FindByEmailAsync(credentials.EmailAddress);
             if (user == null)
             {
                 return UnprocessableEntity("Invalid username or password.");
             }
-            var validPassword = await userManager.CheckPasswordAsync(user, credentials.Password);
+            var validPassword = await _userManager.CheckPasswordAsync(user, credentials.Password);
             var userModel = await GetUserData(user);
             return Ok(userModel);
 
         }
 
        
-      /* public async Task<UserSummaryViewModel> GetUserData(CrmUser crmUser)
+       public async Task<UserSummaryViewModel> GetUserData(CrmUser crmUser)
         {
+            if (crmUser == null) 
+                return null;
+            var roles = await _userManager.GetRolesAsync(crmUser);
+            if (roles.Count == 0)
+            {
+                roles.Add("prospect");
+            }
             // TODO: add GetUserData method (see lesson below)
             var jwt = await _jwtFactory.GenerateEncodedToken(crmUser.UserName,
        _jwtFactory.GenerateClaimsIdentity(crmUser.UserName, crmUser.Id.ToString()));
-            
-        //returns a UserSummaryViewModel containing a JWT and other user info
-       return Ok(userModel); 
-       //}*/
+            var viewModel = new UserSummaryViewModel();
+            viewModel.UserId = crmUser.Id;
+            viewModel.Name = crmUser.UserName;
+            viewModel.EmailAddress = crmUser.Email;
+            viewModel.Roles = roles.ToArray();
+            viewModel.JWTtoken = jwt;
+            //returns a UserSummaryViewModel containing a JWT and other user info
+            return viewModel; 
+       }
+
+        
     }
 }
 

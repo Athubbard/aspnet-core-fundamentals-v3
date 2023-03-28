@@ -8,11 +8,10 @@ namespace SimpleCrm.WebApi.Auth
 {
     public class UserSummaryViewModel
     {
-        public string User { get; set; }
-        public string Id { get; set; }
-        public string name { get; set; }
-        public string Emailaddress { get; set; }
-        public string roles { get; set; }
+        public string UserId { get; set; }
+        public string Name { get; set; }
+        public string EmailAddress { get; set; }
+        public IList <string> Roles { get; set; }
         public string JWTtoken { get; set; }
 
     }

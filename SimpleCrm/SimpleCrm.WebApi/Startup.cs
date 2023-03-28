@@ -13,7 +13,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using SimpleCrm.SqlDbServices;
 using SimpleCrm.WebApi.Auth;
-using SimpleCrm.WebApi.Data;
 using SimpleCrm.WebApi.Filters;
 using System;
 using System.Collections.Generic;
@@ -50,10 +49,11 @@ namespace SimpleCrm.WebApi
                 options.UseSqlServer(
                     Configuration.GetConnectionString("SimpleCrmConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<CrmIdentityDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("SimpleCrmConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddRazorPages();
 
             var identityBuilder = services.AddIdentityCore<CrmUser>(o =>
             {
